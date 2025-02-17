@@ -16,6 +16,9 @@ class UserORM(
 ):  # наследуюсь от миксинов чтобы не писать одно и тоже
     __tablename__ = "users"
 
+    telegram_id: Mapped[int] = mapped_column(
+        BigInteger
+    )  # тут BigInteger так как у телеграмма большие id на 11 символов
     first_name: Mapped[str]
     second_name: Mapped[str]
 

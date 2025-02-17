@@ -1,12 +1,11 @@
 from datetime import datetime, timezone
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import BigInteger, DateTime, func
+from sqlalchemy import DateTime, func
 
 
 class IntPKMixin:
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    # тут BigInteger так как у телеграмма большие id на 11 симовлов
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
 
 class TimeMixin:
