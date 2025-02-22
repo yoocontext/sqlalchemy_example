@@ -30,7 +30,7 @@ class PostORM(BaseORM, IntPKMixin, TimeMixin):
 
     title: Mapped[str]
     text: Mapped[str]
-    enable: Mapped[bool]
+    enable: Mapped[bool] = mapped_column(default=True)
 
     user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"))
 

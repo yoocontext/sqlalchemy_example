@@ -1,4 +1,6 @@
+from dishka import Scope
 from sqlalchemy import Result, Select, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infra.models.user import UserORM, PostORM
 from app.infra.repository.base import BaseRepositoryORM
@@ -19,13 +21,16 @@ class UserRepositoryORM(BaseRepositoryORM):
         user: UserORM | None = result.scalars().one_or_none()
         return user
 
+    async def add_user(self, user: UserORM) -> UserORM:
+        self.session.add(user)
+        return user
+
     async def add_post(self, user: UserORM, post: PostORM) -> UserORM:
         """добавляю пост в user"""
 
         user.posts.append(post)
         self.session.add(user)
-
-        await self.session.commit()
+        print(user)
 
         return user
 
@@ -33,7 +38,5 @@ class UserRepositoryORM(BaseRepositoryORM):
         """добавляю сразу несколько постов в user"""
         user.posts.extend(posts)
         self.session.add(user)
-
-        await self.session.commit()
 
         return user

@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
 )
 
+from app.infra.repository.user import UserRepositoryORM
 from app.settings.base import CommonSettings
 from app.settings.dev import DevSettings
 
@@ -38,6 +39,15 @@ class DatabaseProvider(Provider):
             yield session
 
 
+class RepositoryProvider(Provider):
+    @provide(scope=Scope.REQUEST)
+    async def provide_user_repository(self, session: AsyncSession) -> UserRepositoryORM:
+        repository = UserRepositoryORM(session=session)
+        return repository
+
+
 @lru_cache(1)
 def create_container() -> AsyncContainer:
-    return make_async_container(CommonProvider(), DatabaseProvider())
+    return make_async_container(
+        CommonProvider(), RepositoryProvider(), DatabaseProvider()
+    )
